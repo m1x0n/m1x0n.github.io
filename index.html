@@ -5,50 +5,62 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Welcome to m1x0n's pages</title>
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" charset="utf-8"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.js" charset="utf-8"></script>
+    <style>
+      * {
+        font-family: 'Ubuntu', 'Helvetica Neue', 'Segoe UI', 'Arial';
+      }
+
+      .caption {
+        text-align: center;
+      }
+
+      .big-button {
+        padding: 10px;
+        font-size: large;
+        margin-top: 10px;
+      }
+
+      .fit-cats {
+        padding-left: 6px;
+        padding-right: 6px;
+      }
+
+      .content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+    </style>
 </head>
 <body>
-    <div class="ui container">
-        <h1 class="ui header center aligned">
-            Welcome to m1x0n's pages
-            <div class="sub header">
-                To be continued...
-            </div>
-        </h1>
-
-        <div class="ui centered card">
-            <div class="image cat-giphy">
-                <div class="ui inverted dimmer transition hidden">
-                    <div class="ui text loader">Loading</div>
-                </div>
-                <img src="https://media.giphy.com/media/ule4vhcY1xEKQ/giphy.gif">
-            </div>
-            <div class="content">
-                <div class="header center aligned">Come on. Cheer up!</div>
-            </div>
-            <div class="ui bottom attached button more-button">
-                <i class="paw icon"></i>
-                More cats
-            </div>
-        </div>
-    </div>
+  <div class="content">
+    <h2 class="caption">Welcome to m1x0n's pages</h2>
+    <img src="https://media2.giphy.com/media/JIX9t2j0ZTN9S/giphy-downsized.gif" id="cat-animation"></img>
+    <button id="more-cats-button" class="big-button" onclick="loadImage()">More cats &#x1f43e;</button>
+    <button class="big-button fit-cats" onclick="loadProjects()">View projects</button>
+  </div>
     <script type="text/javascript">
-        $(function() {
-            $(".more-button").on("click", function() {
-                $(".cat-giphy").dimmer('show');
-                let tags = ['cat', 'kitten', 'puss', 'furball', 'feline'];
-                $.get("http://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC&tag=" + tags[Date.now() % 5])
-                    .done(function(result) {
-                        if (result.data && result.data.image_url.length) {
-                            $(".cat-giphy img").prop("src", result.data.image_url).on("load", function() {
-                                $(".cat-giphy").dimmer('hide');
-                            });
-                        }
-                    });
-            });
-        });
+        function loadImage () {
+          var animation = document.getElementById('cat-animation')
+          var loadMoreButton = document.getElementById('more-cats-button')
+
+          loadMoreButton.disabled = true
+          animation.src = './kitty.gif'
+          animation.onload = null
+
+          fetch("https://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC&tag=" + ['cat', 'kitten'][Date.now() % 2])
+            .then((response) => { return response.json() })
+            .catch(error => loadMoreButton.disabled = false)
+            .then((response) => {
+              animation.onload = () => loadMoreButton.disabled = false
+              animation.src = response.data.images.fixed_width.url
+            })
+        }
+
+        function loadProjects () {
+          window.location.href = "https://github.com/m1x0n"
+        }
     </script>
 </body>
 </html>
