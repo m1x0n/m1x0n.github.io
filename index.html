@@ -5,62 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Welcome to m1x0n's pages</title>
-    <style>
-      * {
-        font-family: 'Ubuntu', 'Helvetica Neue', 'Segoe UI', 'Arial';
-      }
-
-      .caption {
-        text-align: center;
-      }
-
-      .big-button {
-        padding: 10px;
-        font-size: large;
-        margin-top: 10px;
-      }
-
-      .fit-cats {
-        padding-left: 6px;
-        padding-right: 6px;
-      }
-
-      .content {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-      }
-    </style>
+    <link type="image/png" sizes="32x32" rel="icon" href="/src/assets/favicon.png">
 </head>
 <body>
-  <div class="content">
-    <h2 class="caption">Welcome to m1x0n's pages</h2>
-    <img src="https://media2.giphy.com/media/JIX9t2j0ZTN9S/giphy-downsized.gif" id="cat-animation"></img>
-    <button id="more-cats-button" class="big-button fit-cats" onclick="loadImage()">More cats &#x1f43e;</button>
-    <button class="big-button fit-cats" onclick="loadProjects()">View projects</button>
-  </div>
-    <script type="text/javascript">
-        function loadImage () {
-          var animation = document.getElementById('cat-animation')
-          var loadMoreButton = document.getElementById('more-cats-button')
-
-          loadMoreButton.disabled = true
-          animation.src = './kitty.gif'
-          animation.onload = null
-
-          fetch("https://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC&tag=" + ['cat', 'kitten'][Date.now() % 2])
-            .then((response) => { return response.json() })
-            .catch(error => loadMoreButton.disabled = false)
-            .then((response) => {
-              animation.onload = () => loadMoreButton.disabled = false
-              animation.src = response.data.images.fixed_width.url
-            })
-        }
-
-        function loadProjects () {
-          window.location.href = "https://github.com/m1x0n"
-        }
-    </script>
+<div id="app"></div>
+<script type="module" src="/src/main.js"></script>
 </body>
+<footer>
+    <a href="https://github.com/m1x0n" class="footer-link">@m1x0n</a> &nbsp; 2022
+</footer>
 </html>
