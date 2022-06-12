@@ -8,14 +8,14 @@
   >
   <button
       id="more-cats-button"
-      class="big-button fit-cats"
+      class="big-button"
       @click="loadImage"
       :disabled="loading"
       title="Load new cat"
   >More cats &#x1f43e;
   </button>
   <button
-      class="big-button fit-cats"
+      class="big-button"
       @click="viewProjects"
       title="View Github profile"
   >View projects
