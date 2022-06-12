@@ -124,10 +124,28 @@ class Giphy extends CatProvider {
     }
 }
 
+// Testing provider
+class ErrorProvider extends CatProvider {
+    constructor() {
+        super('', {})
+    }
+    async getCatOrError() {
+        return Promise.resolve(
+            CatOrError.fromError(
+                new Error("Errrooorrr!")
+            )
+        )
+    }
+}
+
 // Default image
 class CatFallback {
+    #content
+    constructor(content) {
+        this.#content = content
+    }
     cat() {
-        return new Cat('../assets/placeholder.gif')
+        return new Cat(this.#content)
     }
 }
 
@@ -148,9 +166,7 @@ class CatProviderPool {
         if (result.isError()) {
             console.log(result.error().toString())
             if (attempt + 1 > maxAttempts) {
-                return Promise.resolve(
-                    await this.#fallback.cat()
-                )
+                return Promise.resolve(this.#fallback.cat())
             }
 
             let nextProviderID = function(id) {
@@ -169,7 +185,12 @@ class CatProviderPool {
 
         return this.tryGet(providerID, attempt, maxAttempts)
     }
+    getFallbackCat() {
+        return this.#fallback.cat()
+    }
 }
+
+import catPlaceholder from "./assets/placeholder.gif"
 
 const catProviderPool = new CatProviderPool(
     [
@@ -177,7 +198,7 @@ const catProviderPool = new CatProviderPool(
         new CatAAS(),
         new Giphy()
     ],
-    new CatFallback()
+    new CatFallback(catPlaceholder)
 )
 
 export default catProviderPool

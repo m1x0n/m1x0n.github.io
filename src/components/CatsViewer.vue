@@ -26,7 +26,6 @@
 <script>
 import catProviderPool from "../cats"
 import catLoading from "../assets/kitty.gif"
-import catPlaceholder from "../assets/placeholder.gif"
 
 const profileUrl = "https://github.com/m1x0n"
 
@@ -49,7 +48,7 @@ export default {
     return {
       loading: false,
       catImage: {
-        src: catPlaceholder,
+        src: catProviderPool.getFallbackCat().content(),
         onLoad: null
       }
     }
