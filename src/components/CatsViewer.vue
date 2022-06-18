@@ -12,7 +12,7 @@
       @click="loadImage"
       :disabled="loading"
       title="Load new cat"
-  >More cats &#x1f43e;
+  >{{this.label}}
   </button>
   <button
       class="big-button"
@@ -25,6 +25,7 @@
 
 <script>
 import catProviderPool from "../cats"
+import PawsProgressBar from "../paws"
 import catLoading from "../assets/kitty.gif"
 
 const profileUrl = "https://github.com/m1x0n"
@@ -34,11 +35,16 @@ export default {
   methods: {
     async loadImage() {
       this.loading = true
+      this.progressBar.start()
+
       this.catImage.src = catLoading
       this.catImage.onLoad = null
       let cat = await catProviderPool.getCat()
       this.catImage.src = cat.content()
-      this.catImage.onLoad = () => this.loading = false
+      this.catImage.onLoad = () => {
+        this.loading = false
+        this.progressBar.end()
+      }
     },
     viewProjects() {
       window.location.href = profileUrl
@@ -50,7 +56,16 @@ export default {
       catImage: {
         src: catProviderPool.getFallbackCat().content(),
         onLoad: null
-      }
+      },
+      progressBar: null
+    }
+  },
+  created() {
+    this.progressBar = new PawsProgressBar()
+  },
+  computed: {
+    label: function() {
+      return this.progressBar.val()
     }
   }
 }
