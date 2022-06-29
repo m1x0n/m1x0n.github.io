@@ -15,6 +15,11 @@
   a {
     color: lightblue;
   }
+
+  img {
+    text-align: center;
+    color: #858397;
+  }
 }
 
 body {
@@ -41,6 +46,7 @@ body {
   padding: 10px;
   margin-top: 10px;
   min-width: 108px;
+  height: 48px;
 }
 
 .content {
@@ -64,4 +70,8 @@ footer {
 
 .footer-link {
   text-decoration: none;
+}
+
+img {
+  text-align: center;
 }

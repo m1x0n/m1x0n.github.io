@@ -190,7 +190,7 @@ class CatProviderPool {
     }
 }
 
-import catPlaceholder from "./assets/placeholder.gif"
+import catPlaceholder from "./assets/placeholder.webm"
 
 const catProviderPool = new CatProviderPool(
     [

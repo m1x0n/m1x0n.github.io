@@ -1,10 +1,24 @@
 <template>
 <div class="content">
+  <video
+      autoplay
+      loop
+      muted
+      playsinline
+      v-if="catImage.isFallback()"
+      width="320"
+      height="240"
+  >
+    <source :src="catImage.src" type="video/webm" @load="catImage.onLoad">
+  </video>
   <img
       :src="catImage.src"
       @load="catImage.onLoad"
       id="cat-animation"
       alt="Cat"
+      v-if="!catImage.isFallback()"
+      height="320"
+      width="240"
   >
   <button
       id="more-cats-button"
@@ -26,7 +40,7 @@
 <script>
 import catProviderPool from "../cats"
 import PawsProgressBar from "../paws"
-import catLoading from "../assets/kitty.gif"
+import catLoading from "../assets/cat-what.webm"
 
 const profileUrl = "https://github.com/m1x0n"
 
@@ -55,7 +69,11 @@ export default {
       loading: false,
       catImage: {
         src: catProviderPool.getFallbackCat().content(),
-        onLoad: null
+        onLoad: null,
+        isFallback: function() {
+          return this.src.includes('placeholder') ||
+              this.src.includes('cat-what')
+        },
       },
       progressBar: null
     }
