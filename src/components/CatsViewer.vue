@@ -40,7 +40,6 @@
 <script>
 import catProviderPool from "../cats"
 import PawsProgressBar from "../paws"
-import catLoading from "../assets/cat-what.webm"
 
 const profileUrl = "https://github.com/m1x0n"
 
@@ -51,7 +50,6 @@ export default {
       this.loading = true
       this.progressBar.start()
 
-      this.catImage.src = catLoading
       this.catImage.onLoad = null
       let cat = await catProviderPool.getCat()
       this.catImage.src = cat.content()
@@ -71,8 +69,7 @@ export default {
         src: catProviderPool.getFallbackCat().content(),
         onLoad: null,
         isFallback: function() {
-          return this.src.includes('placeholder') ||
-              this.src.includes('cat-what')
+          return this.src.includes('placeholder')
         },
       },
       progressBar: null
