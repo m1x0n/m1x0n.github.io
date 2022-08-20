@@ -55,7 +55,7 @@ class CatAAS extends CatProvider {
         this.name = 'cataas'
     }
     async getCatOrError() {
-        return fetch(this.endpoint)
+        return fetch(this.endpoint, {mode: 'no-cors'})
             .then((response) => {
                 return response.json()
             })
