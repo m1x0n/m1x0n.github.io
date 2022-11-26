@@ -12,5 +12,16 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
+  },
+  build: {
+    rollupOptions: {
+      external: ['petite-vue'],
+      output: {
+        format: 'es',
+        paths: {
+          "petite-vue": 'https://unpkg.com/petite-vue@0.4.1/dist/petite-vue.es.js',
+        }
+      }
+    }
   }
 })
