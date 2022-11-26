@@ -8,9 +8,168 @@
     <link type="image/png" sizes="32x32" rel="icon" href="/src/assets/favicon.png">
 </head>
 <body>
-<div id="app"></div>
-<script type="module" src="/src/main.js"></script>
+<div id="app">
+    <h2 class="caption">Welcome to m1x0n's pages</h2>
+    <div v-scope="CatsViewer({})"></div>
+</div>
+<script type="module">
+    import { createApp } from 'petite-vue'
+    import catProviderPool from "./src/cats"
+    import PawsProgressBar from "./src/paws"
+    const profileUrl = "https://github.com/m1x0n"
+    function CatsViewer(props) {
+        return {
+            $template: '#cats-viewer',
+            loading: false,
+            catImage: {
+                src: catProviderPool.getFallbackCat().content(),
+                onLoad: null,
+                isFallback: function() {
+                    return this.src.includes('placeholder')
+                },
+            },
+            progressBar: new PawsProgressBar(),
+            async loadImage() {
+                this.loading = true
+                this.progressBar.start()
+
+                this.catImage.onLoad = null
+                let cat = await catProviderPool.getCat()
+                this.catImage.src = cat.content()
+                this.catImage.onLoad = () => {
+                    this.loading = false
+                    this.progressBar.end()
+                }
+            },
+            viewProjects() {
+                window.location.href = profileUrl
+            },
+            label() {
+                return this.progressBar.val()
+            }
+        }
+    }
+
+    createApp({
+        CatsViewer
+    }).mount()
+</script>
+<template id="cats-viewer">
+    <div class="content">
+        <video
+                autoplay
+                loop
+                muted
+                playsinline
+                v-if="catImage.isFallback()"
+                width="320"
+                height="240"
+        >
+            <source :src="catImage.src" type="video/webm" @load="catImage.onLoad">
+        </video>
+        <img
+                :src="catImage.src"
+                @load="catImage.onLoad"
+                id="cat-animation"
+                alt="Cat"
+                v-if="!catImage.isFallback()"
+                height="320"
+                width="240"
+        >
+        <button
+                id="more-cats-button"
+                class="big-button"
+                @click="loadImage"
+                :disabled="loading"
+                title="Load new cat"
+        >{{label()}}
+        </button>
+        <button
+                class="big-button"
+                @click="viewProjects"
+                title="View Github profile"
+        >View projects
+        </button>
+    </div>
+</template>
 </body>
+<style>
+    @media (prefers-color-scheme: dark) {
+        body {
+            background: rgb(43, 42, 51);
+            color: white;
+        }
+
+        button {
+            background: #858397;
+            color: rgba(251, 251, 254, 1);
+            border-color: black;
+            border-width: 1px;
+            border-style: hidden;
+        }
+
+        a {
+            color: lightblue;
+        }
+
+        img {
+            text-align: center;
+            color: #858397;
+        }
+    }
+
+    body {
+        display:flex;
+        flex-direction:column;
+        height:100vh;
+        margin:0;
+        line-height: 1.6;
+        font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+        Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+        font-size: 15px;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    .caption {
+        text-align: center;
+    }
+
+    .big-button {
+        padding: 10px;
+        margin-top: 10px;
+        min-width: 108px;
+        height: 48px;
+    }
+
+    .content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    #cat-animation {
+        max-width: 320px;
+        max-height: 240px;
+    }
+
+    footer {
+        display: flex;
+        margin-top: auto;
+        justify-content: center;
+        min-height: 20px;
+    }
+
+    .footer-link {
+        text-decoration: none;
+    }
+
+    img {
+        text-align: center;
+    }
+</style>
 <footer>
     <a href="https://github.com/m1x0n" class="footer-link">@m1x0n</a> &nbsp; 2022
 </footer>
