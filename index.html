@@ -44,6 +44,9 @@
             viewProjects() {
                 window.location.href = profileUrl
             },
+            viewWasmZero() {
+                window.location.href = '/wasmzero/index.html'
+            },
             label() {
                 return this.progressBar.val()
             }
@@ -89,6 +92,12 @@
                 @click="viewProjects"
                 title="View Github profile"
         >View projects
+        </button>
+        <button
+                class="big-button"
+                @click="viewWasmZero"
+                title="View wasmzero"
+        >View wasm0
         </button>
     </div>
 </template>
@@ -171,6 +180,6 @@
     }
 </style>
 <footer>
-    <a href="https://github.com/m1x0n" class="footer-link">@m1x0n</a> &nbsp; 2022
+    Build with &nbsp;<a href="https://github.com/vuejs/petite-vue" class="footer-link">petite-vue</a> &nbsp;by&nbsp; <a href="https://github.com/m1x0n" class="footer-link">@m1x0n</a> &nbsp; 2022-2023
 </footer>
 </html>
