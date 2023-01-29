@@ -32,6 +32,10 @@ jobs:
       - run: npm ci
       - run: npm run build
 
+      - name: Copy extra assets
+        run: |
+          cp -r wasmzero/ ./dist
+
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         if: ${{ github.ref == 'refs/heads/master' }}
